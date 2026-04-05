@@ -56,3 +56,7 @@ The backend folder contains the Node.js server and MySQL database structure.
 🎯Purpose
 Nest Guard was developed as an academic project demonstrating user interface design, structured page navigation, backend integration, data handling, and a functional communication model using WhatsApp as the medium.
 The system provides a complete flow from user authentication to real-time engagement with babysitters.
+
+🎥Demo Video
+Below is a demonstration video showcasing the complete flow of the Nest Guard application, including the start screen, authentication pages, nannies listing, feature interactions through WhatsApp, and the profile management interface.
+The demo highlights the user experience, UI transitions, communication features, and the overall functionality of the system.
