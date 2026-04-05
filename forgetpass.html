@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Set New Password</title>
+
+<style>
+/* ... (Aapka existing CSS same rahega) ... */
+body{
+    background-image: url('image5.jpeg'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+.form-container {
+    width: 300px; 
+    margin: 100px auto;
+    background: transparent; 
+    padding: 30px 25px; 
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5); 
+    position: relative; 
+}
+.form-container h2 { text-align: center; color: black; margin-bottom: 5px; font-size: 24px; font-weight: normal; }
+.description-text { text-align: center; color: black; font-size: 13px; margin-bottom: 25px; }
+.form-group { position: relative; margin-bottom: 20px; }
+.form-container input[type="text"], .form-container input[type="password"] { 
+    width: 100%; padding: 10px 40px 10px 15px; border: none; border-radius: 5px; box-sizing: border-box; 
+    background-color: rgba(255, 255, 255, 0.9); color: #333; font-size: 16px;
+}
+.email-input::after { content: '✉'; position: absolute; top: 50%; right: 15px; transform: translateY(-50%); color: #888; font-size: 18px; }
+.password-input::after { content: '🔒'; position: absolute; top: 50%; right: 15px; transform: translateY(-50%); color: #888; font-size: 18px; }
+.reset-button {
+    width: 100%; padding: 12px; border: none; border-radius: 20px; cursor: pointer; font-size: 16px;
+    font-weight: bold; margin-top: 5px; background-color: #f57ae0; color: white; transition: background-color 0.3s;
+}
+.reset-button:hover { background-color: #7d266f; }
+.login-back-link { text-align: center; margin-top: 25px; font-size: 14px; }
+.login-back-link a { color: #7d266f; text-decoration: none; font-weight: bold; }
+</style>
+
+<script>
+async function fun(event) {
+    event.preventDefault(); // Page refresh nahi hoga
+
+    var form = document.forms.NewPasswordForm;
+    var email = form.Email.value;
+    var newPass = form.NewPassword.value;
+    var confirmPass = form.ConfirmPassword.value;
+    
+    var regEmail = /^\S+@\S+\.\S+$/;
+
+    // --- Basic Validation ---
+    if(email == "" || !regEmail.test(email)){
+        alert("Please enter a valid email address.");
+        return false;
+    }
+
+    if(newPass.length < 6){
+        alert("New Password must be at least 6 characters long.");
+        return false;
+    }
+    
+    if(newPass !== confirmPass){
+        alert("New Password and Confirm Password do not match.");
+        return false;
+    }
+
+    // --- Backend Connection Section ---
+    try {
+        const response = await fetch('http://localhost:5000/forgot-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                email: email, 
+                newPassword: newPass 
+            })
+        });
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert(result.message); // "Password successfully change ho gaya hai!"
+            window.location.href = "login.html"; // Success ke baad login page par bhejo
+        } else {
+            // Agar user registered nahi hai, toh server message dega: 
+            // "Ye email registered nahi hai. Password reset nahi ho sakta!"
+            alert(result.message); 
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Server se connection nahi ho paya.");
+    }
+}
+</script>
+</head>
+
+<body>
+
+<div class="form-container">
+    <h2>Set New Password</h2>
+    
+    <div class="description-text">
+        Enter your email and new password to reset it directly.
+    </div>
+    
+    <form name="NewPasswordForm" onsubmit="fun(event)">
+    
+        <div class="form-group email-input">
+            <input type="text" name="Email" placeholder="Email" />
+        </div>
+        
+        <div class="form-group password-input">
+            <input type="password" name="NewPassword" placeholder="New Password" /> 
+        </div>
+        
+        <div class="form-group password-input">
+            <input type="password" name="ConfirmPassword" placeholder="Confirm Password" /> 
+        </div>
+        
+        <input type="submit" value="Set Password" class="reset-button" />
+        
+    </form>
+    
+    <div class="login-back-link">
+        <a href="login.html">Back to Login</a>
+    </div>
+
+</div>
+
+</body>
+</html>

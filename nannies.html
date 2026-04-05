@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nannies - Nest Guard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+:root {
+            --primary-purple: #fbc2eb;
+            --text-dark: #3a3a5e;
+            --glass-white: rgba(255, 255, 255, 0.6);
+            --dark-blue: #a6c1ee;
+            --accent-pink: #e07bb0;
+            --btn-gradient: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: #fdf2ff;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+
+        .app-container {
+            width: 330px; height: 560px;
+            background-image: url('image5.jpeg');
+            background-size: cover; background-position: center;
+            border-radius: 35px; position: relative; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+.scrollable {
+    height:100%;
+    overflow-y:auto;
+    padding:15px 20px 100px;
+    scrollbar-width:none;
+}
+.scrollable::-webkit-scrollbar { display:none; }
+
+.padding-wrap { padding: 0 20px; }
+
+        .brand-header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            margin-top: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: -12px;
+        }
+
+        .logo-box img {
+            width: 125px;
+            height: auto;
+            display: block;
+            mix-blend-mode: multiply;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+        .user-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .user-text h1 { 
+            font-size: 16px; 
+            color: var(--text-dark); 
+            font-weight: 600; 
+            line-height: 1.2;
+        }
+
+        .user-text p { 
+            font-size: 10px; 
+            color: #8e8ead; 
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+        
+        .user-text p i {
+            color: var(--accent-pink);
+            font-size: 9px;
+        }
+
+
+.header {
+    margin-bottom: 18px;
+}
+
+.header h1 {
+    font-size: 18px;
+    color: var(--text-dark);
+    font-weight: 600;
+    margin-bottom: 6px;
+}
+
+.header p {
+    font-size: 11px;
+    color: #666;
+    line-height: 1.4;
+}
+.sort-bar {
+    display:flex;
+    gap:8px;
+    margin-bottom:20px;
+}
+
+.sort-bar select {
+    flex:1;
+    padding:8px;
+    border-radius:10px;
+    border:none;
+    font-size:11px;
+    background:white;
+}
+
+.nanny-card {
+    background:white;
+    border-radius:20px;
+    padding:12px;
+    margin-bottom:12px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+}
+.nanny-card img { width:60px; height:60px; border-radius:50%; }
+
+.info { flex:1; }
+.info h4 { font-size:14px; }
+.info p { font-size:11px; color:#666; }
+
+.buttons { display:flex; gap:6px; margin-top:5px; }
+.buttons button {
+    padding:6px 10px;
+    border:none;
+    border-radius:15px;
+    font-size:10px;
+    cursor:pointer;
+}
+.select-btn {
+    background:#fff;
+    border:1px solid #a6c1ee;
+    color:#3a3a5e;
+    font-weight:600;
+}
+
+.select-btn.active {
+    background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+    color:white;
+}
+
+.view { background:var(--btn-gradient); color:white; }
+.msg { background:white; border:1px solid var(--primary-purple); color:var(--accent-pink); }
+
+.bottom-nav {
+    position:absolute;
+    bottom:20px;
+    left:20px;
+    right:20px;
+    background:white;
+    display:flex;
+    justify-content:space-around;
+    padding:12px;
+    border-radius:25px;
+}
+.nav-item {
+    text-decoration:none;
+    font-size:10px;
+    color:#aaa;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+.nav-item.active { color:var(--dark-blue); }
+
+#selectedBox {
+    background: white;
+    border-radius: 20px;
+    padding: 12px;
+    margin-bottom: 15px;
+    text-align: center;
+    font-size: 13px;
+    color: #555;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+#selectedBox img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    margin-bottom: 5px;
+    object-fit: cover;
+}
+
+#removeSelected {
+    margin-top: 8px;
+    padding: 7px 14px;
+    background: var(--btn-gradient);
+    color: white;
+    border: none;
+    border-radius: 15px;
+    font-size: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transition: 0.3s ease;
+}
+
+#removeSelected:hover {
+    transform: scale(1.05);
+}
+
+#removeSelected:active {
+    transform: scale(0.95);
+}
+
+
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="scrollable">
+    <div class="brand-header-flex">
+    <div class="header-left">
+        <div class="logo-box">
+            <img src="logo.jpeg" alt="Logo">
+        </div>
+        <div class="user-text">
+            <h1>Welcome to Safe Care......</h1>
+            <p>Your trusted partner in finding loving and reliable caregivers for your little ones</p>
+        </div>
+    </div>
+</div>
+
+
+    <div id="chatModal" style="display:none; position:absolute; bottom:20px; right:15px; width:300px; max-height:400px; background:white; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); overflow:hidden; z-index:100;">
+            <div style="background:var(--btn-gradient); color:white; padding:12px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
+
+        <span id="chatWith">Chat</span>
+        <span id="closeChat" style="cursor:pointer;">&times;</span>
+    </div>
+    <div id="chatMessages" style="padding:10px; height:250px; overflow-y:auto; font-size:13px; background:#f5f5f5;"></div>
+    <div style="display:flex; border-top:1px solid #ddd;">
+        <input id="chatInput" type="text" placeholder="Type a message..." style="flex:1; padding:10px; border:none; outline:none;">
+            <button id="sendBtn" style="background:var(--accent-pink); color:white; border:none; padding:0 12px; cursor:pointer;">Send</button>
+    </div>
+</div>
+
+    <div class="header">
+    <div class="header-text">
+        <h1>Find Your Perfect Sitter.....</h1>
+        <p>Sort by proximity, price & trusted ratings to hire the best nanny for your family</p>
+    </div>
+</div>
+    <div class="sort-bar">
+        <select id="priceSort">
+            <option value="">Price</option>
+            <option value="low">Low → High</option>
+            <option value="high">High → Low</option>
+        </select>
+
+        <select id="ratingSort">
+            <option value="">Rating</option>
+            <option value="low">Low → High</option>
+            <option value="high">High → Low</option>
+        </select>
+
+        <select id="locationFilter">
+            <option value="">Location</option>
+            <option value="Mumbai">Mumbai</option>
+            <option value="Pune">Pune</option>
+            <option value="Delhi">Delhi</option>
+            <option value="Ahmedabad">Ahmedabad</option>
+        </select>
+    </div>
+      <div id="selectedBox">
+    <h3>No babysitter selected</h3>
+</div>
+
+
+
+<!-- 20 Babysitter Cards -->
+
+<div class="nanny-card" data-id="1" data-price="1500" data-rating="4.2" data-location="Mumbai"
+data-bio="Caring babysitter from Mumbai, experienced with toddlers"
+data-exp="5 years" data-timings="9 AM - 6 PM" data-pay="₹1500/day" data-address="Mumbai, India" data-phone="7977500916">
+    <img src="img1.jpg">
+    <div class="info">
+        <h4>Aarohi Sharma</h4>
+        <p>₹1500/day • 5 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="2" data-price="1300" data-rating="4.5" data-location="Mumbai"
+data-bio="Experienced with newborn care and family routines"
+data-exp="4 years" data-timings="8 AM - 5 PM" data-pay="₹1300/day" data-address="Mumbai, India" data-phone="7208435538">
+    <img src="img2.jpg">
+    <div class="info">
+        <h4>Ananya Iyer</h4>
+        <p>₹1300/day • 4 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="3" data-price="1700" data-rating="4.8" data-location="Ahmedabad"
+data-bio="Certified nurse with childcare experience"
+data-exp="6 years" data-timings="9 AM - 7 PM" data-pay="₹1700/day" data-address="Ahmedabad, India" data-phone="7977500916">
+    <img src="img3.jpg">
+    <div class="info">
+        <h4>Neha Patel</h4>
+        <p>₹1700/day • 6 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="4" data-price="1200" data-rating="4.1" data-location="Pune"
+data-bio="Friendly babysitter who loves engaging kids"
+data-exp="3 years" data-timings="10 AM - 6 PM" data-pay="₹1200/day" data-address="Pune, India" data-phone="7208435538">
+    <img src="img4.jpg">
+    <div class="info">
+        <h4>Sana Khan</h4>
+        <p>₹1200/day • 3 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="5" data-price="2000" data-rating="5.0" data-location="Mumbai"
+data-bio="Highly experienced babysitter focused on safety"
+data-exp="8 years" data-timings="8 AM - 8 PM" data-pay="₹2000/day" data-address="Mumbai, India" data-phone="7977500916">
+    <img src="img5.jpg">
+    <div class="info">
+        <h4>Riya Mehta</h4>
+        <p>₹2000/day • 8 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="6" data-price="1400" data-rating="4.3" data-location="Delhi"
+data-bio="Loving and patient nanny"
+data-exp="5 years" data-timings="9 AM - 6 PM" data-pay="₹1400/day" data-address="Delhi, India" data-phone="7208435538">
+    <img src="img6.jpg">
+    <div class="info">
+        <h4>Pooja Singh</h4>
+        <p>₹1400/day • 5 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="7" data-price="1800" data-rating="4.7" data-location="Mumbai"
+data-bio="Energetic nanny who organizes fun activities"
+data-exp="7 years" data-timings="10 AM - 7 PM" data-pay="₹1800/day" data-address="Mumbai, India" data-phone="7977500916">
+    <img src="img7.jpg">
+    <div class="info">
+        <h4>Meera Nair</h4>
+        <p>₹1800/day • 7 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="8" data-price="1600" data-rating="4.6" data-location="Ahmedabad"
+data-bio="Experienced caregiver with discipline skills"
+data-exp="6 years" data-timings="9 AM - 6 PM" data-pay="₹1600/day" data-address="Ahmedabad, India" data-phone="7208435538">
+    <img src="img8.jpg">
+    <div class="info">
+        <h4>Kavita Desai</h4>
+        <p>₹1600/day • 6 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="9" data-price="1500" data-rating="4.4" data-location="Pune"
+data-bio="Warm babysitter for all age groups"
+data-exp="5 years" data-timings="9 AM - 5 PM" data-pay="₹1500/day" data-address="Pune, India" data-phone="7977500916">
+    <img src="img9.jpg">
+    <div class="info">
+        <h4>Sunita Verma</h4>
+        <p>₹1500/day • 5 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="10" data-price="1700" data-rating="4.8" data-location="Delhi"
+data-bio="Professional nanny with certifications"
+data-exp="6 years" data-timings="8 AM - 6 PM" data-pay="₹1700/day" data-address="Delhi, India" data-phone="7208435538">
+    <img src="img10.jpg">
+    <div class="info">
+        <h4>Farah Ali</h4>
+        <p>₹1700/day • 6 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="11" data-price="1300" data-rating="4.2" data-location="Mumbai"
+data-bio="Gentle and caring babysitter, great with toddlers"
+data-exp="4 years" data-timings="9 AM - 5 PM" data-pay="₹1300/day" data-address="Mumbai, India" data-phone="7977500916">
+    <img src="img11.jpg">
+    <div class="info">
+        <h4>Priya Kapoor</h4>
+        <p>₹1300/day • 4 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="12" data-price="1550" data-rating="4.5" data-location="Ahmedabad"
+data-bio="Experienced nanny with calm and patient nature"
+data-exp="5 years" data-timings="9 AM - 6 PM" data-pay="₹1550/day" data-address="Ahmedabad, India" data-phone="7208435538">
+    <img src="img12.jpg">
+    <div class="info">
+        <h4>Neelam Gupta</h4>
+        <p>₹1550/day • 5 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="13" data-price="1650" data-rating="4.6" data-location="Delhi"
+data-bio="Professional nanny focused on discipline and care"
+data-exp="6 years" data-timings="8 AM - 6 PM" data-pay="₹1650/day" data-address="Delhi, India" data-phone="7977500916">
+    <img src="img13.jpg">
+    <div class="info">
+        <h4>Shalini Roy</h4>
+        <p>₹1650/day • 6 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="14" data-price="1400" data-rating="4.3" data-location="Mumbai"
+data-bio="Friendly babysitter with strong family values"
+data-exp="5 years" data-timings="9 AM - 6 PM" data-pay="₹1400/day" data-address="Mumbai, India" data-phone="7208435538">
+    <img src="img14.jpg">
+    <div class="info">
+        <h4>Anita Sharma</h4>
+        <p>₹1400/day • 5 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="15" data-price="1500" data-rating="4.4" data-location="Pune"
+data-bio="Warm and responsible nanny"
+data-exp="5 years" data-timings="9 AM - 5 PM" data-pay="₹1500/day" data-address="Pune, India" data-phone="7977500916">
+    <img src="img15.jpg">
+    <div class="info">
+        <h4>Rashmi Jain</h4>
+        <p>₹1500/day • 5 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="16" data-price="1750" data-rating="4.7" data-location="Mumbai"
+data-bio="Energetic nanny who keeps kids active and happy"
+data-exp="7 years" data-timings="10 AM - 7 PM" data-pay="₹1750/day" data-address="Mumbai, India" data-phone="7208435538">
+    <img src="img16.jpg">
+    <div class="info">
+        <h4>Deepa Iyer</h4>
+        <p>₹1750/day • 7 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="17" data-price="1350" data-rating="4.2" data-location="Delhi"
+data-bio="Reliable babysitter with good communication skills"
+data-exp="4 years" data-timings="9 AM - 5 PM" data-pay="₹1350/day" data-address="Delhi, India" data-phone="7977500916">
+    <img src="img17.jpg">
+    <div class="info">
+        <h4>Alka Yadav</h4>
+        <p>₹1350/day • 4 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="18" data-price="1450" data-rating="4.3" data-location="Pune"
+data-bio="Supportive nanny who ensures kids feel safe"
+data-exp="5 years" data-timings="9 AM - 6 PM" data-pay="₹1450/day" data-address="Pune, India" data-phone="7208435538">
+    <img src="img18.jpg">
+    <div class="info">
+        <h4>Jyoti Mishra</h4>
+        <p>₹1450/day • 5 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="19" data-price="1600" data-rating="4.6" data-location="Ahmedabad"
+data-bio="Disciplined and caring babysitter"
+data-exp="6 years" data-timings="9 AM - 6 PM" data-pay="₹1600/day" data-address="Ahmedabad, India" data-phone="7977500916">
+    <img src="img19.jpg">
+    <div class="info">
+        <h4>Rekha Patel</h4>
+        <p>₹1600/day • 6 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+
+<div class="nanny-card" data-id="20" data-price="1700" data-rating="4.8" data-location="Mumbai"
+data-bio="Professional babysitter with excellent reviews"
+data-exp="6 years" data-timings="8 AM - 6 PM" data-pay="₹1700/day" data-address="Mumbai, India" data-phone="7208435538">
+    <img src="img20.jpg">
+    <div class="info">
+        <h4>Nisha Shah</h4>
+        <p>₹1700/day • 6 yrs exp</p>
+        <div class="buttons"><button class="view">View</button><button class="msg">Message</button><button class="select-btn">Select</button></div>
+    </div>
+</div>
+  </div>
+
+  <nav class="bottom-nav">
+      <a href="home.html" class="nav-item"><i class="fa fa-house"></i><span>Home</span></a>
+      <a href="nannies.html" class="nav-item active"><i class="fa fa-users"></i><span>Nannies</span></a>
+      <a href="features.html" class="nav-item"><i class="fa fa-star"></i><span>Features</span></a>
+      <a href="profile.html" class="nav-item"><i class="fa fa-user"></i><span>Profile</span></a>
+  </nav>
+</div>
+
+<script>
+// GLOBAL SELECT FUNCTION (Only ONE Babysitter Selected)
+const selectButtons = document.querySelectorAll('.select-btn');
+const selectedBox = document.getElementById('selectedBox');
+
+function updateSelectedUI(nanny) {
+    selectedBox.innerHTML = `
+<h2 style="font-size:10px; margin-bottom:10px; color:#444; font-weight:700;">YOUR SELECTED BABYSITTER IS…</h2>
+
+    <div style="
+        background:white; 
+        padding:12px; 
+        border-radius:18px; 
+        box-shadow:0 4px 12px rgba(0,0,0,0.15);
+        text-align:center;
+    ">
+        <img src="${nanny.img}" style="
+            width:70px; height:70px; border-radius:50%;
+            object-fit:cover; margin-bottom:8px;
+            border:2px solid #a6c1ee;
+        ">
+
+        <h3 style="font-size:16px; margin-bottom:4px;">${nanny.name}</h3>
+
+        <p style="font-size:12px; color:#555; margin-bottom:8px;">
+            ${nanny.bio}
+        </p>
+
+        <div style="text-align:left; font-size:12px; color:#444; line-height:1.4;">
+            <p><strong>Experience:</strong> ${nanny.exp}</p>
+            <p><strong>Timings:</strong> ${nanny.timings}</p>
+            <p><strong>Pay:</strong> ${nanny.pay}</p>
+            <p><strong>Location:</strong> ${nanny.address}</p>
+            <p><strong>Rating:</strong> ⭐ ${nanny.rating}</p>
+            <p><strong>Phone:</strong> ${nanny.phone}</p>
+        </div>
+
+        <button id="removeSelected" style="
+            margin-top:10px;
+            padding:8px 16px;
+            background:var(--btn-gradient);
+            color:white;
+            border:none;
+            border-radius:14px;
+            font-size:12px;
+            font-weight:600;
+            cursor:pointer;
+        ">
+            Remove
+        </button>
+    </div>
+`;
+
+    // REMOVE — also clear localStorage
+    document.getElementById('removeSelected').onclick = () => {
+        localStorage.removeItem("selectedNanny");
+        selectedBox.innerHTML = `<h3>No babysitter selected</h3>`;
+        selectButtons.forEach(b => b.classList.remove("active"));
+    };
+}
+
+// WHEN USER CLICKS SELECT
+selectButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+
+        // Remove active from ALL buttons
+        selectButtons.forEach(b => b.classList.remove('active'));
+
+        // Add active to clicked button
+        btn.classList.add('active');
+
+        // Get card
+        const card = btn.closest('.nanny-card');
+
+        // Prepare nanny data
+        let nanny = {
+            name: card.querySelector('h4').textContent,
+            img: card.querySelector('img').src,
+            bio: card.dataset.bio,
+            exp: card.dataset.exp,
+            timings: card.dataset.timings,
+            pay: card.dataset.pay,
+            address: card.dataset.address,
+            rating: card.dataset.rating,
+            phone: card.dataset.phone,
+            id: card.dataset.id   // unique id required to restore highlight
+        };
+
+        // Save to localStorage
+        localStorage.setItem("selectedNanny", JSON.stringify(nanny));
+
+        // Update UI
+        updateSelectedUI(nanny);
+    });
+});
+
+// LOAD SELECTED DATA ON PAGE LOAD
+window.onload = () => {
+    let saved = localStorage.getItem("selectedNanny");
+    if (saved) {
+        let nanny = JSON.parse(saved);
+        updateSelectedUI(nanny);
+
+        // Restore highlight on right select button
+        selectButtons.forEach(btn => {
+            if (btn.closest(".nanny-card").dataset.id === nanny.id) {
+                btn.classList.add("active");
+            }
+        });
+    }
+};
+
+
+// SORTING
+const priceSort = document.getElementById('priceSort');
+const ratingSort = document.getElementById('ratingSort');
+const locationFilter = document.getElementById('locationFilter');
+const container = document.querySelector('.scrollable');
+const cards = Array.from(document.querySelectorAll('.nanny-card'));
+
+function renderCards(sortedCards) {
+    sortedCards.forEach(card => container.appendChild(card));
+}
+
+// PRICE SORT
+priceSort.addEventListener('change', () => {
+    let sorted = [...cards];
+    if(priceSort.value === "low") sorted.sort((a,b)=> Number(a.dataset.price) - Number(b.dataset.price));
+    else if(priceSort.value === "high") sorted.sort((a,b)=> Number(b.dataset.price) - Number(a.dataset.price));
+    renderCards(sorted);
+});
+
+// RATING SORT
+ratingSort.addEventListener('change', () => {
+    let sorted = [...cards];
+    if(ratingSort.value === "low") sorted.sort((a,b)=> Number(a.dataset.rating) - Number(b.dataset.rating));
+    else if(ratingSort.value === "high") sorted.sort((a,b)=> Number(b.dataset.rating) - Number(a.dataset.rating));
+    renderCards(sorted);
+});
+
+// LOCATION FILTER
+locationFilter.addEventListener('change', () => {
+    const value = locationFilter.value;
+    cards.forEach(card => card.style.display = (!value || card.dataset.location === value) ? "flex" : "none");
+});
+
+// CHAT MODAL
+const messageBtns = document.querySelectorAll('.msg');
+const viewBtns = document.querySelectorAll('.view');
+const chatModal = document.getElementById('chatModal');
+const chatWith = document.getElementById('chatWith');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput = document.getElementById('chatInput');
+const sendBtn = document.getElementById('sendBtn');
+const closeChat = document.getElementById('closeChat');
+
+// MESSAGE BUTTON
+messageBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const card = btn.closest('.nanny-card');
+        const name = card.querySelector('h4').textContent;
+
+        chatWith.textContent = `Chat with ${name}`;
+        chatMessages.innerHTML = '';
+        chatModal.style.display = 'block';
+
+        chatInput.style.display = 'block';
+        sendBtn.style.display = 'inline-block';
+        chatInput.value = '';
+    });
+});
+
+// SEND MESSAGE
+// SEND MESSAGE (UPDATED LIKE HOME PAGE)
+sendBtn.addEventListener('click', () => {
+    const msg = chatInput.value.trim();
+
+    if (msg) {
+        // USER MESSAGE
+        const msgDiv = document.createElement('div');
+        msgDiv.textContent = msg;
+        msgDiv.style.cssText = 'text-align:right; background:#a6c1ee; color:white; padding:5px 10px; margin:5px; border-radius:10px;';
+        chatMessages.appendChild(msgDiv);
+        chatInput.value = '';
+
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+        // GREETING DELAY
+        setTimeout(() => {
+            const greetDiv = document.createElement('div');
+            greetDiv.textContent = "Hello! 😊 Here's my info:";
+            greetDiv.style.cssText = 'text-align:left; background:#eee; padding:5px 10px; margin:5px; border-radius:10px;';
+            chatMessages.appendChild(greetDiv);
+
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // GET CURRENT CARD DATA
+            const name = chatWith.textContent.replace("Chat with ", "");
+
+            const currentCard = [...document.querySelectorAll('.nanny-card')]
+                .find(card => card.querySelector('h4').textContent === name);
+
+            const bio = currentCard.dataset.bio;
+            const exp = currentCard.dataset.exp;
+            const timings = currentCard.dataset.timings;
+            const pay = currentCard.dataset.pay;
+            const address = currentCard.dataset.address;
+            const phone = currentCard.dataset.phone;
+            
+            // INFO DELAY
+            setTimeout(() => {
+                const replyDiv = document.createElement('div');
+
+                replyDiv.textContent = `Babysitter Info:
+- Bio: ${bio}
+- Experience: ${exp}
+- Timings: ${timings}
+- Pay: ${pay}
+- Address: ${address}
+- Phone: ${phone}
+For more enquiry call or whatsapp me on: ${phone}`;
+
+                replyDiv.style.cssText = 'text-align:left; background:#eee; padding:5px 10px; margin:5px; border-radius:10px; white-space:pre-line;';
+                
+                chatMessages.appendChild(replyDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            }, 1200);
+
+        }, 800);
+    }
+});
+
+// VIEW BUTTON
+viewBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const card = btn.closest('.nanny-card');
+
+        const name = card.querySelector('h4').textContent;
+        const bio = card.dataset.bio || '';
+        const exp = card.dataset.exp || '';
+        const timings = card.dataset.timings || '';
+        const pay = card.dataset.pay || '';
+        const address = card.dataset.address || '';
+        const img = card.querySelector('img').src;
+
+        chatWith.textContent = name;
+        chatMessages.innerHTML = `
+    <div style="padding:10px;">
+        
+        <!-- TOP ROW -->
+        <div style="display:flex; gap:10px; align-items:center;">
+            
+            <img src="${img}" 
+            style="width:60px; height:60px; border-radius:50%; object-fit:cover;">
+            
+            <div>
+                <h3 style="margin:0; font-size:14px;">${name}</h3>
+                <p style="margin:3px 0; font-size:12px; color:#555;">
+                    ${bio}
+                </p>
+            </div>
+
+        </div>
+
+        <!-- BELOW DETAILS -->
+        <div style="margin-top:10px; font-size:12px;">
+            <p><b>Experience:</b> ${exp}</p>
+            <p><b>Timings:</b> ${timings}</p>
+            <p><b>Pay:</b> ${pay}</p>
+            <p><b>Address:</b> ${address}</p>
+        </div>
+
+    </div>
+`;
+
+        chatInput.style.display = 'none';
+        sendBtn.style.display = 'none';
+        chatModal.style.display = 'block';
+    });
+});
+
+// CLOSE CHAT
+closeChat.addEventListener('click', ()=>{ chatModal.style.display = 'none'; });
+
+// LOAD SELECTED DATA ON PAGE LOAD
+window.onload = () => {
+    let saved = localStorage.getItem("selectedNanny");
+    if (saved) {
+        let nanny = JSON.parse(saved);
+        updateSelectedUI(nanny);
+
+        // Restore highlight on correct select button
+        selectButtons.forEach(btn => {
+            if (btn.closest(".nanny-card").dataset.id === nanny.id) {
+                btn.classList.add("active");
+            }
+        });
+    }
+};
+
+</script>
+
+</body>
+</html>

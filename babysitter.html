@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Babysitter Onboarding</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: 'Poppins', sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg,#fbcfe8,#dbeafe);
+}
+
+.container{
+  width:330px;
+  height:560px;
+  position:relative;
+}
+
+.page{
+  position:absolute;
+  inset:0;
+  background:#ffffff;
+  border-radius:35px;
+  padding:25px 20px;
+  text-align:center;
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
+  background-image: url("image2.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+/* icon */
+.image-circle{
+  width:180px;
+  height:180px;
+  background:#fbcfe8;
+  border-radius:50%;
+  margin:60px auto 30px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.image-circle img{
+  width:110px;
+}
+
+h2{
+  font-size:22px;
+  color:#1e3a8a;
+  margin-bottom:12px;
+}
+
+p{
+  font-size:14px;
+  color:#6b7280;
+  margin-bottom:35px;
+}
+
+.arrow-btn{
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  border:none;
+  background: linear-gradient(135deg,#ec4899,#3b82f6);
+  color:white;
+  font-size:26px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto;
+}
+
+a{ text-decoration:none; }
+</style>
+</head>
+
+<body>
+<div class="container">
+  <div class="page">
+    <div class="image-circle">
+      <img src="https://cdn-icons-png.flaticon.com/512/1995/1995574.png">
+    </div>
+    <h2>Find best babysitter<br>for your kids</h2>
+    <p>Login to app and choose<br>the best nanny for your children</p>
+
+    <!-- ONLY CHANGE: href -->
+    <a href="babysitter1.html">
+      <button class="arrow-btn">›</button>
+    </a>
+  </div>
+</div>
+</body>
+</html>

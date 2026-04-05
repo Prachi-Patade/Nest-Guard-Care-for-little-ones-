@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Login Form</title>
+
+<style>
+/* --- STYLES MODIFIED FOR LOGIN FORM LOOK --- */
+body{
+    background-image: url('image5.jpeg'); 
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    font-family: Arial, sans-serif;
+    color: black;
+}
+
+.form-container {
+    width: 300px; 
+    margin: 150px auto;   /* CENTERED */
+
+    background: TRANSPARENT; 
+    padding: 30px 25px; 
+    border-radius: 10px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5); 
+    position: relative; 
+}
+
+.form-container h2 {
+    text-align: center;
+    color: black;
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: normal;
+}
+
+.form-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-container input[type="text"],
+.form-container input[type="password"] {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: none;
+    border-radius: 5px;
+    box-sizing: border-box; 
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    font-size: 16px;
+}
+
+.form-container ::placeholder {
+    color: #999;
+    opacity: 1; 
+}
+
+.form-group::after {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    color: #888;
+    font-size: 18px;
+}
+
+.form-group.email-input::after {
+    content: '✉';
+}
+
+.form-group.password-input::after {
+    content: '🔒';
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px; 
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    background-color: #7eeff9; 
+    color: white;
+    transition: background-color 0.3s;
+}
+
+.login-button:hover {
+    background-color: #1b6970;
+}
+
+.options-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.options-bar label {
+    display: flex;
+    align-items: center;
+}
+
+.options-bar input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+.options-bar a {
+    color: #f57ae0;
+    text-decoration: none;
+}
+
+.options-bar a:hover {
+    text-decoration: underline;
+}
+
+.register-link {
+    text-align: center;
+    margin-top: 25px;
+    font-size: 14px;
+}
+
+.register-link a {
+    color: #7d266f;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-link a:hover {
+    text-decoration: underline;
+}
+</style>
+
+<script>
+// "async" aur "event" add kiya backend fetch ke liye
+async function fun(event){
+    event.preventDefault(); // Default submit refresh rokne ke liye
+
+    var form = document.forms.LoginForm;
+    var email = form.Email.value;
+    var password = form.Password.value;
+
+    var regEmail = /^\S+@\S+\.\S+$/;
+
+    if(email == "" || !regEmail.test(email)){
+        alert("Please enter a valid email address.");
+        form.Email.focus();
+        return false;
+    }
+
+    if(password == ""){
+        alert("Please enter your password.");
+        form.Password.focus();
+        return false;
+    }
+    
+    // --- Backend Fetch Logic ---
+    try {
+        const response = await fetch('http://localhost:5000/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ 
+                email: email, 
+                password: password 
+            })
+        });
+
+        const result = await response.json();
+        
+        if (response.ok) {
+            localStorage.setItem("userId", result.userId);
+
+            alert("Login Successful!");
+            window.location.href = "babysitter.html"; // Success redirect
+        } else {
+            alert(result.message); // Register karne wala msg yahan dikhega
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Server connection failed!");
+    }
+}
+</script>
+</head>
+
+<body>
+
+<div class="form-container">
+    <h2>Login</h2>
+    
+    <form name="LoginForm" onsubmit="fun(event)">
+    
+        <div class="form-group email-input">
+            <input type="text" name="Email" placeholder="Email" />
+        </div>
+        
+        <div class="form-group password-input">
+            <input type="password" name="Password" placeholder="Password" />
+        </div>
+        
+        <div class="options-bar">
+            <label>
+                <input type="checkbox" name="RememberMe" id="RememberMe" />
+                Remember me
+            </label>
+            <a href="forgetpass.html">Forgot password?</a>
+        </div>
+        
+        <input type="submit" value="Login" class="login-button" />
+        
+    </form>
+    
+    <div class="register-link">
+        Don't have an account? <a href="reg.html">Register</a>
+    </div>
+
+</div>
+
+</body>
+</html>

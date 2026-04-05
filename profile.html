@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile - Nest Guard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+:root {
+    --primary-purple: #fbc2eb;
+    --text-dark: #3a3a5e;
+    --glass-white: rgba(255,255,255,0.6);
+    --dark-blue: #a6c1ee;
+    --accent-pink: #e07bb0;
+}
+
+/* RESET */
+* { margin:0; padding:0; box-sizing:border-box; font-family:'Poppins',sans-serif; }
+
+body {
+    background:#fdf2ff;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    min-height:100vh;
+}
+
+/* APP CONTAINER */
+.app-container {
+    width:330px;
+    height:560px;
+    background-image:url('image5.jpeg');
+    background-size:cover;
+    background-position:center;
+    border-radius:35px;
+    position:relative;
+    overflow:hidden;
+    box-shadow:0 20px 40px rgba(0,0,0,0.15);
+}
+
+.scrollable-content {
+    height:100%;
+    overflow-y:auto;
+    padding:15px 0 100px 0;
+}
+.scrollable-content::-webkit-scrollbar { display:none; }
+
+.padding-wrap { padding:0 20px; }
+
+/* HEADER */
+.brand-header-flex {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:10px;
+    margin-top:10px;
+}
+
+/* LOGO */
+.header-left {
+    display:flex;
+    align-items:center;
+    gap:12px;
+    margin-left:-12px;
+}
+
+.logo-box img {
+    width:125px;
+    height:auto;
+    display:block;
+    mix-blend-mode:multiply;
+}
+
+.header-btns { display:flex; gap:5px; }
+
+.btn-action {
+    border:none;
+    padding:6px 12px;
+    border-radius:15px;
+    font-size:11px;
+    font-weight:600;
+    color:white;
+    cursor:pointer;
+}
+
+#editBtn { background:var(--dark-blue); }
+#saveBtn { background:var(--accent-pink); }
+
+/* CARDS */
+.glass-card {
+    background:var(--glass-white);
+    backdrop-filter:blur(10px);
+    border-radius:20px;
+    padding:15px;
+    margin-bottom:15px;
+    border:1px solid rgba(255,255,255,0.4);
+}
+
+.profile-main-info { text-align:center; }
+
+.profile-pic {
+    width:70px;
+    height:70px;
+    border-radius:50%;
+    border:3px solid white;
+    margin-bottom:10px;
+    object-fit:cover;
+    background:#eee;
+    cursor:pointer;
+}
+
+/* EDITABLE */
+.editable-field { 
+    outline:none; 
+    min-height:16px;
+}
+
+/* EDITING STYLE */
+.editing .editable-field {
+    background:rgba(255,255,255,0.5);
+    border-radius:5px;
+    padding:2px 5px;
+}
+
+/* PLACEHOLDER ALWAYS VISIBLE */
+.editable-field[data-placeholder]:empty:before {
+    content: attr(data-placeholder);
+    color:#999;
+    font-style:italic;
+}
+
+/* USER TEXT */
+.user-name {
+    font-size:16px;
+    font-weight:600;
+    color:var(--text-dark);
+}
+
+.contact-detail {
+    font-size:11px;
+    color:#666;
+    margin-top:3px;
+}
+.contact-detail i { color:var(--accent-pink); width:15px; }
+
+.section-title {
+    font-size:13px;
+    font-weight:600;
+    color:var(--text-dark);
+    margin-bottom:10px;
+}
+
+.info-row {
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    padding:6px 0;
+    border-bottom:1px solid rgba(0,0,0,0.05);
+}
+
+/* BOTTOM NAV (Updated to match Babysitter UI) */
+.bottom-nav { position: absolute; bottom: 20px; left: 20px; right: 20px; background: white; display: flex; justify-content: space-around; padding: 12px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #b1b1c7; text-decoration: none; font-size: 10px; }
+        .nav-item.active { color: var(--dark-blue); }
+
+/* HINT */
+.hint {
+    font-size:10px;
+    color:#777;
+    text-align:center;
+    margin:4px 0 12px 0;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app-container" id="profilePage">
+<div class="scrollable-content">
+<div class="padding-wrap">
+
+<!-- HEADER -->
+<div class="brand-header-flex">
+    <div class="header-left">
+        <div class="logo-box">
+            <img src="logo.jpeg" alt="Logo">
+        </div>
+    </div>
+
+    <div class="header-btns">
+        <button class="btn-action" id="editBtn" onclick="toggleEdit()">Edit</button>
+        <button class="btn-action" id="saveBtn" onclick="saveProfile()">Save</button>
+    </div>
+</div>
+
+<p class="hint">Tap "Edit" to fill your profile</p>
+
+<!-- PROFILE CARD -->
+<div class="glass-card profile-main-info">
+    <input type="file" id="uploadPic" accept="image/*" hidden>
+    <div style="display:flex; flex-direction:column; align-items:center; margin-top:5px;">
+    <img id="profileImage" class="profile-pic" onclick="uploadPic.click()">
+
+    <button id="removePicBtn" style="
+        margin-top:8px;
+        font-size:10px;
+        padding:4px 12px;
+        border:none;
+        border-radius:12px;
+        background: linear-gradient(135deg, #ff758c 0%, #ff7eb3 100%);
+        color:white;
+        cursor:pointer;
+        display:none;
+        box-shadow:0 3px 8px rgba(255,120,150,0.4);
+    ">Remove Photo</button>
+</div>
+    <div class="user-name editable-field" id="name" data-placeholder="Enter your name"></div>
+
+    <div class="contact-detail">
+        <i class="fa-solid fa-phone"></i>
+        <span class="editable-field" id="phone" data-placeholder="Enter phone number"></span>
+    </div>
+
+    <div class="contact-detail">
+        <i class="fa-solid fa-envelope"></i>
+        <span class="editable-field" id="email" data-placeholder="Enter email"></span>
+    </div>
+</div>
+
+<!-- PARENT INFO -->
+<div class="glass-card">
+    <div class="section-title">Parent Info</div>
+    <div class="info-row">
+        <span>Type</span>
+        <span class="editable-field" id="type" data-placeholder="Full Day / Part Time"></span>
+    </div>
+    <div class="info-row">
+        <span>Timing</span>
+        <span class="editable-field" id="time" data-placeholder="e.g. 9 AM - 5 PM"></span>
+    </div>
+    <div class="info-row">
+        <span>Job Type</span>
+        <span class="editable-field" id="exp" data-placeholder="e.g. Working/Stay-at-home"></span>
+    </div>
+</div>
+
+<!-- BABY INFO -->
+<div class="glass-card">
+    <div class="section-title">Baby Info</div>
+    <div class="info-row">
+        <span>Name</span>
+        <span class="editable-field" id="bname" data-placeholder="Baby name"></span>
+    </div>
+    <div class="info-row">
+        <span>Age</span>
+        <span class="editable-field" id="bage" data-placeholder="e.g. 6 months"></span>
+    </div>
+    <div class="info-row">
+        <span>Feeding</span>
+        <span class="editable-field" id="feed" data-placeholder="e.g. 1 PM - 3 PM"></span>
+    </div>
+    <div class="info-row">
+        <span>Preference 1</span>
+        <span class="editable-field" id="p1" data-placeholder="e.g. Loves toys"></span>
+    </div>
+    <div class="info-row">
+        <span>Preference 2</span>
+        <span class="editable-field" id="p2" data-placeholder="e.g. Likes music"></span>
+    </div>
+    <div class="info-row">
+        <span>Preference 3</span>
+        <span class="editable-field" id="p3" data-placeholder="e.g. Afraid of dark"></span>
+    </div>
+    <div class="info-row">
+        <span>Preference 4</span>
+        <span class="editable-field" id="p4" data-placeholder="e.g. Food preference"></span>
+    </div>
+</div>
+
+</div>
+</div>
+
+<!-- BOTTOM NAV (Copied from Babysitter UI) -->
+<nav class="bottom-nav">
+    <a href="home.html" class="nav-item"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="nannies.html" class="nav-item"><i class="fa-solid fa-users"></i><span>Nannies</span></a>
+    <a href="features.html" class="nav-item"><i class="fa-solid fa-star"></i><span>Features</span></a>
+    <a href="profile.html" class="nav-item active"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+</nav>
+
+</div>
+
+<script>
+// SAFE ELEMENT REFERENCES
+const editBtn = document.getElementById('editBtn');
+const profilePage = document.getElementById('profilePage');
+const uploadPic = document.getElementById('uploadPic');
+const profileImage = document.getElementById('profileImage');
+
+// EDIT MODE
+function toggleEdit() {
+    const fields = document.querySelectorAll('.editable-field');
+    const isEditing = profilePage.classList.toggle('editing');
+    fields.forEach(field => field.contentEditable = isEditing);
+    editBtn.innerText = isEditing ? "Cancel" : "Edit";
+}
+
+// SAVE PROFILE
+function saveProfile() {
+    const userId = localStorage.getItem("userId");
+
+    const data = {
+        userId: userId,
+        name: document.getElementById("name").innerText,
+        phone: document.getElementById("phone").innerText,
+        email: document.getElementById("email").innerText,
+        type: document.getElementById("type").innerText,
+        time: document.getElementById("time").innerText,
+        exp: document.getElementById("exp").innerText,
+        bname: document.getElementById("bname").innerText,
+        bage: document.getElementById("bage").innerText,
+        feed: document.getElementById("feed").innerText,
+        p1: document.getElementById("p1").innerText,
+        p2: document.getElementById("p2").innerText,
+        p3: document.getElementById("p3").innerText,
+        p4: document.getElementById("p4").innerText,
+        profileImage: localStorage.getItem("profileImage")
+    };
+
+    fetch("http://localhost:5000/save-profile", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(data => {
+        alert(data.message);
+    });
+}
+// IMAGE UPLOAD
+uploadPic.onchange = function () {
+    const file = this.files[0];
+    const reader = new FileReader();
+    reader.onload = function () {
+        profileImage.src = reader.result;
+        localStorage.setItem("profileImage", reader.result);
+        document.getElementById("removePicBtn").style.display = "inline-block";
+    };
+    if(file) reader.readAsDataURL(file);
+};
+
+// LOAD PROFILE ON PAGE LOAD
+window.onload = () => {
+    const saved = JSON.parse(localStorage.getItem('profile') || "{}");
+    for(let id in saved) {
+        if(document.getElementById(id)) document.getElementById(id).innerText = saved[id];
+    }
+    const img = localStorage.getItem("profileImage");
+    if(img) profileImage.src = img;
+    if(img) {
+    profileImage.src = img;
+    document.getElementById("removePicBtn").style.display = "inline-block";
+}
+};
+
+// REMOVE PROFILE PHOTO
+document.getElementById("removePicBtn").onclick = function () {
+    profileImage.src = ""; 
+    localStorage.removeItem("profileImage");
+    this.style.display = "none";
+};
+</script>
+
+</body>
+</html>

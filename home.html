@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Babysitter App UI - Nest Guard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-purple: #fbc2eb;
+            --text-dark: #3a3a5e;
+            --glass-white: rgba(255, 255, 255, 0.6);
+            --dark-blue: #a6c1ee;
+            --accent-pink: #e07bb0;
+            --btn-gradient: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            background: #fdf2ff;
+            display: flex; justify-content: center; align-items: center; min-height: 100vh;
+        }
+
+        .app-container {
+            width: 330px; height: 560px;
+            background-image: url('image5.jpeg');
+            background-size: cover; background-position: center;
+            border-radius: 35px; position: relative; overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .scrollable-content {
+            height: 100%; overflow-y: auto; padding: 15px 0px 100px 0px;
+            scrollbar-width: none;
+        }
+        .scrollable-content::-webkit-scrollbar { display: none; }
+
+        .padding-wrap { padding: 0 20px; }
+
+        .brand-header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            margin-top: 10px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-left: -12px;
+        }
+
+        .logo-box img {
+            width: 125px;
+            height: auto;
+            display: block;
+            mix-blend-mode: multiply;
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .user-text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .user-text h1 { 
+            font-size: 16px; 
+            color: var(--text-dark); 
+            font-weight: 600; 
+            line-height: 1.2;
+        }
+
+        .user-text p { 
+            font-size: 10px; 
+            color: #8e8ead; 
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-top: 2px;
+        }
+        
+        .user-text p i {
+            color: var(--accent-pink);
+            font-size: 9px;
+        }
+
+        .notification-bell { 
+            background: white; 
+            width: 38px; 
+            height: 38px; 
+            border-radius: 12px; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            color: var(--primary-purple); 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06); 
+        }
+
+        .search-bar { background: white; border-radius: 15px; padding: 12px 15px; display: flex; align-items: center; gap: 10px; margin-bottom: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+        .search-bar input { border: none; outline: none; width: 100%; font-size: 13px; }
+
+        .slider-wrapper { border-radius: 20px; overflow: hidden; position: relative; margin-bottom: 25px; background: var(--glass-white); backdrop-filter: blur(10px); }
+        .slider-track { display: flex; transition: transform 0.5s ease; width: 300%; }
+        .slide { width: 33.33%; padding: 20px; display: flex; align-items: center; justify-content: space-between; }
+        .btn-read { background: var(--btn-gradient); color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 12px; margin-top: 10px; font-weight: 600; }
+
+        .section-header { display: flex; justify-content: space-between; align-items: center; padding: 0 20px; margin-bottom: 15px; }
+        .section-header h2 { font-size: 16px; color: var(--text-dark); font-weight: 600; }
+        .section-header a { font-size: 13px; color: var(--accent-pink); text-decoration: none; font-weight: 600; }
+
+        .nearby-scroll { display: flex; gap: 15px; overflow-x: auto; padding: 0 20px 10px 20px; scrollbar-width: none; }
+        .nearby-card { min-width: 260px; background: white; border-radius: 20px; padding: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); border: 1px solid rgba(255,255,255,0.8); }
+        .card-header { display: flex; gap: 10px; align-items: center; margin-bottom: 10px; }
+        .card-header img { width: 55px; height: 55px; border-radius: 50%; border: 2px solid var(--primary-purple); }
+        .card-header .name { font-size: 13px; font-weight: 600; color: #333; }
+        .card-header .price { font-size: 11px; color: var(--accent-pink); font-weight: 600; }
+        .card-header .rating-small { font-size: 11px; color: #888; margin-left: auto; white-space: nowrap;}
+        .nearby-card .bio { font-size: 10px; color: #777; line-height: 1.4; margin-bottom: 15px; height: 30px; overflow: hidden; }
+        .card-btns { display: flex; gap: 8px; }
+        .card-btns button { flex: 1; padding: 8px; border-radius: 20px; font-size: 10px; border: none; cursor: pointer; font-weight: 600; }
+        .btn-view { background: var(--btn-gradient); color: white; }
+        .btn-msg { background: white; border: 1px solid var(--primary-purple); color: var(--accent-pink); }
+
+        .top-rated-list { padding: 0 20px; }
+        .rated-card { background: white; border-radius: 20px; padding: 12px; margin-bottom: 12px; display: flex; align-items: center; gap: 15px; position: relative; }
+        .rated-card img { width: 60px; height: 60px; border-radius: 50%; }
+        .rated-info h4 { font-size: 14px; color: #333; }
+        .rated-info p { font-size: 12px; color: #888; }
+        .heart-icon { position: absolute; right: 15px; color: var(--accent-pink); cursor: pointer; }
+
+        .bottom-nav { position: absolute; bottom: 20px; left: 20px; right: 20px; background: white; display: flex; justify-content: space-around; padding: 12px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; color: #b1b1c7; text-decoration: none; font-size: 10px; }
+        .nav-item.active { color: var(--dark-blue); }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <div class="scrollable-content">
+        <div class="padding-wrap">
+        <!-- Chat Modal goes here -->
+    <div id="chatModal" style="display:none; position:absolute; bottom:20px; right:15px; width:300px; max-height:400px; background:white; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); overflow:hidden; z-index:100;">
+        <div style="background:var(--btn-gradient); color:white; padding:12px; font-weight:600; display:flex; justify-content:space-between; align-items:center;">
+            <span id="chatWith">Chat</span>
+            <span id="closeChat" style="cursor:pointer;">&times;</span>
+        </div>
+        <div id="chatMessages" style="padding:10px; height:250px; overflow-y:auto; font-size:13px; background:#f5f5f5;"></div>
+        <div style="display:flex; border-top:1px solid #ddd;">
+            <input id="chatInput" type="text" placeholder="Type a message..." style="flex:1; padding:10px; border:none; outline:none;">
+            <button id="sendBtn" style="background:var(--accent-pink); color:white; border:none; padding:0 12px; cursor:pointer;">Send</button>
+        </div>
+    </div> 
+            <div class="brand-header-flex">
+                <div class="header-left">
+                    <div class="logo-box">
+                        <img src="logo.jpeg" alt="Logo">
+                    </div>
+                    <div class="user-text">
+                        <h1>Welcome to Nest Guard</h1>
+                        <p><i class="fa-solid fa-hand-holding-heart"></i>Trusted care for your precious little ones</p>
+                    </div>
+                </div>
+                <div class="notification-bell"><i class="fa-solid fa-heart"></i></div>
+            </div>
+
+            <div class="search-bar" id="searchBar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search babysitters..."readonly>
+            </div>
+
+            <div class="slider-wrapper">
+                <div class="slider-track" id="sliderTrack">
+                    <div class="slide">
+    <div>
+        <h3>Baby care & parenting</h3>
+        <p>Top tips & advice for new parents…</p>
+        <button class="btn-read" data-url="https://www.cdc.gov/child-development/positive-parenting-tips/infants.html">Read article</button>
+    </div>
+    <img src="https://cdn-icons-png.flaticon.com/512/3069/3069172.png" width="70">
+        </div>
+
+        <div class="slide">
+        <div>
+            <h3>Newborn basics</h3>
+            <p>Feeding, sleep, bonding tips…</p>
+            <button class="btn-read" data-url="https://kidshealth.org/en/parents/guide-parents.html">Read more</button>
+        </div>
+        <img src="https://cdn-icons-png.flaticon.com/512/1163/1163474.png" width="70">
+    </div>
+
+        <div class="slide">
+        <div>
+            <h3>Baby care & hygiene</h3>
+            <p>Dos and don’ts of baby care…</p>
+            <button class="btn-read" data-url="https://pharmeasy.in/blog/child-care-a-complete-guide-to-baby-care-and-newborn-hygiene/">Read more</button>
+        </div>
+        <img src="https://cdn-icons-png.flaticon.com/512/201/201623.png" width="70">
+    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <h2>Discover Nannies</h2>
+            <a href="nannies.html">See all</a>
+        </div>
+
+        <!-- UPDATED INDIAN DATA -->
+        <!-- Only the nearby-card section is updated to include data attributes -->
+<div class="nearby-scroll">
+    <div class="nearby-card" 
+         data-bio="Caring babysitter from Mumbai, experienced with toddlers"
+         data-exp="5 years"
+         data-timings="9 AM - 6 PM"
+         data-pay="₹1500/Day"
+         data-address="Mumbai, India"
+         data-contact="7977500916">
+        <div class="card-header">
+            <img src="img1.jpg">
+            <div><p class="name">Aarohi Sharma</p><p class="price">₹1500/Day</p></div>
+            <span class="rating-small">⭐ 4.1</span>
+        </div>
+        <p class="bio">Bio: Caring babysitter from Mumbai, experienced with toddlers...</p>
+        <div class="card-btns"><button class="btn-view">View profile</button><button class="btn-msg">Message</button></div>
+    </div>
+
+    <div class="nearby-card" 
+         data-bio="Experienced with newborn care and South Indian family routines"
+         data-exp="4 years"
+         data-timings="8 AM - 5 PM"
+         data-pay="₹1300/Day"
+         data-address="Mumbai, India"
+         data-contact="7208435538">
+        <div class="card-header">
+            <img src="img2.jpg">
+            <div><p class="name">Ananya Iyer</p><p class="price">₹1300/Day</p></div>
+            <span class="rating-small">⭐ 4.5</span>
+        </div>
+        <p class="bio">Bio: Experienced with newborn care and South Indian family routines...</p>
+        <div class="card-btns"><button class="btn-view">View profile</button><button class="btn-msg">Message</button></div>
+    </div>
+
+    <div class="nearby-card" 
+         data-bio="Certified nurse with childcare experience in Gujarati households"
+         data-exp="6 years"
+         data-timings="9 AM - 7 PM"
+         data-pay="₹1700/Day"
+         data-address="Ahmedabad, India"
+         data-contact="7977500916">
+        <div class="card-header">
+            <img src="img3.jpg">
+            <div><p class="name">Neha Patel</p><p class="price">₹1700/Day</p></div>
+            <span class="rating-small">⭐ 4.8</span>
+        </div>
+        <p class="bio">Bio: Certified nurse with childcare experience in Gujarati households...</p>
+        <div class="card-btns"><button class="btn-view">View profile</button><button class="btn-msg">Message</button></div>
+    </div>
+
+    <div class="nearby-card" 
+         data-bio="Friendly and energetic babysitter, loves engaging kids in activities"
+         data-exp="3 years"
+         data-timings="10 AM - 6 PM"
+         data-pay="₹1200/Day"
+         data-address="Pune, India"
+         data-contact="7208435538">
+        <div class="card-header">
+            <img src="img4.jpg">
+            <div><p class="name">Sana Khan</p><p class="price">₹1200/Day</p></div>
+            <span class="rating-small">⭐ 4.2</span>
+        </div>
+        <p class="bio">Bio: Friendly and energetic babysitter, loves engaging kids in activities...</p>
+        <div class="card-btns"><button class="btn-view">View profile</button><button class="btn-msg">Message</button></div>
+    </div>
+
+    <div class="nearby-card" 
+         data-bio="8+ years experience, specializes in child safety and learning"
+         data-exp="8 years"
+         data-timings="8 AM - 8 PM"
+         data-pay="₹2000/Day"
+         data-address="Mumbai, India"
+         data-contact="7977500916">
+        <div class="card-header">
+            <img src="img5.jpg">
+            <div><p class="name">Riya Mehta</p><p class="price">₹2000/Day</p></div>
+            <span class="rating-small">⭐ 5.0</span>
+        </div>
+        <p class="bio">Bio: 8+ years experience, specializes in child safety and learning...</p>
+        <div class="card-btns"><button class="btn-view">View profile</button><button class="btn-msg">Message</button></div>
+    </div>
+</div>
+        <div class="section-header" style="margin-top: 20px;">
+            <h2>Top rated</h2>
+            <a href="nannies.html">See all</a>
+        </div>
+
+        <div class="top-rated-list">
+            <div class="rated-card">
+                <img src="pic1.jpg">
+                <div class="rated-info"><h4>Kavita Desai</h4><p>⭐ 4.9 (808 reviews)</p></div>
+                <i class="fa-regular fa-heart heart-icon"></i>
+            </div>
+
+            <div class="rated-card">
+                <img src="pic2.jpg">
+                <div class="rated-info"><h4>Sunita Verma</h4><p>⭐ 4.8 (520 reviews)</p></div>
+                <i class="fa-regular fa-heart heart-icon"></i>
+            </div>
+
+            <div class="rated-card">
+                <img src="pic3.jpg">
+                <div class="rated-info"><h4>Meera Nair</h4><p>⭐ 5.0 (310 reviews)</p></div>
+                <i class="fa-regular fa-heart heart-icon"></i>
+            </div>
+
+            <div class="rated-card">
+                <img src="pic4.jpg">
+                <div class="rated-info"><h4>Pooja Singh</h4><p>⭐ 4.7 (240 reviews)</p></div>
+                <i class="fa-regular fa-heart heart-icon"></i>
+            </div>
+
+            <div class="rated-card">
+                <img src="pic5.jpg">
+                <div class="rated-info"><h4>Farah Ali</h4><p>⭐ 4.9 (415 reviews)</p></div>
+                <i class="fa-regular fa-heart heart-icon"></i>
+            </div>
+
+            <div class="rated-card">
+                <img src="pic6.jpg">
+                <div class="rated-info"><h4>Priya Kapoor</h4><p>⭐ 4.6 (190 reviews)</p></div>
+                <i class="fa-regular fa-heart heart-icon"></i>
+            </div>
+        </div>
+    </div>
+    
+<div id="favPopup" style="display:none; position:absolute; bottom:80px; left:20px; right:20px; background:white; border-radius:20px; box-shadow:0 10px 25px rgba(0,0,0,0.2); padding:15px; max-height:250px; overflow-y:auto; z-index:100;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+        <h3 style="margin:0; font-size:16px; color:#333;">Your Favorites</h3>
+        <span id="closeFav" style="cursor:pointer; font-size:18px;">&times;</span>
+    </div>
+    <ul id="favList" style="list-style:none; padding-left:0; font-size:14px; color:#555;"></ul>
+</div>
+<nav class="bottom-nav">
+    <a href="home.html" class="nav-item active"><i class="fa-solid fa-house"></i><span>Home</span></a>
+    <a href="nannies.html" class="nav-item"><i class="fa-solid fa-users"></i><span>Nannies</span></a>
+    <a href="features.html" class="nav-item"><i class="fa-solid fa-star"></i><span>Features</span></a>
+    <a href="profile.html" class="nav-item"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+</nav>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+    const track = document.getElementById('sliderTrack');
+    let idx = 0;
+    setInterval(() => {
+        idx = (idx + 1) % 3;
+        track.style.transform = `translateX(-${idx * 33.33}%)`;
+    }, 4000);
+
+    const readButtons = document.querySelectorAll('.btn-read');
+    readButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const url = btn.getAttribute('data-url');
+            if (url) window.open(url, '_blank');
+        });
+    });
+
+    const searchBar = document.getElementById('searchBar');
+    if (searchBar) {
+        searchBar.addEventListener('click', () => {
+            window.location.href = 'nannies.html';
+        });
+    }
+
+    const hearts = document.querySelectorAll('.heart-icon');
+
+// Load saved favorites from localStorage
+let savedFavs = JSON.parse(localStorage.getItem('favHearts')) || [];
+
+hearts.forEach(heart => {
+    const name = heart.closest('.rated-card').querySelector('h4').textContent;
+
+    // Restore heart state if previously saved
+    if (savedFavs.includes(name)) {
+        heart.classList.remove('fa-regular');
+        heart.classList.add('fa-solid');
+    }
+
+    heart.addEventListener('click', () => {
+        heart.classList.toggle('fa-regular');
+        heart.classList.toggle('fa-solid');
+
+        // Update savedFavs array
+        if (heart.classList.contains('fa-solid')) {
+            if (!savedFavs.includes(name)) savedFavs.push(name);
+        } else {
+            savedFavs = savedFavs.filter(n => n !== name);
+        }
+
+        // Save to localStorage
+        localStorage.setItem('favHearts', JSON.stringify(savedFavs));
+    });
+});
+
+    const messageButtons = document.querySelectorAll('.btn-msg');
+    const chatModal = document.getElementById('chatModal');
+    const chatWith = document.getElementById('chatWith');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatInput = document.getElementById('chatInput');
+    const sendBtn = document.getElementById('sendBtn');
+    const closeChat = document.getElementById('closeChat');
+
+    messageButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const babysitterName = btn.closest('.nearby-card').querySelector('.name').textContent;
+            chatWith.textContent = `Chat with ${babysitterName}`;
+            chatMessages.innerHTML = '';
+            chatModal.style.display = 'block';
+        });
+    });
+
+    if (closeChat) {
+        closeChat.addEventListener('click', () => {
+            chatModal.style.display = 'none';
+        });
+    }
+
+    if (sendBtn) {
+    sendBtn.addEventListener('click', () => {
+        const msg = chatInput.value.trim();
+        if (msg) {
+            // Show user message
+            const msgDiv = document.createElement('div');
+            msgDiv.textContent = msg;
+            msgDiv.style.cssText = 'margin:5px 0; text-align:right; background:#a6c1ee; color:white; padding:5px 10px; border-radius:15px;';
+            chatMessages.appendChild(msgDiv);
+            chatInput.value = '';
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Babysitter greets first
+            setTimeout(() => {
+                const greetDiv = document.createElement('div');
+                greetDiv.textContent = "Hello! 😊 Here's my info:";
+                greetDiv.style.cssText = 'margin:5px 0; text-align:left; background:#f0f0f0; padding:5px 10px; border-radius:15px;';
+                chatMessages.appendChild(greetDiv);
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                // Then show full info after 1.2s
+                setTimeout(() => {
+                    const activeCard = Array.from(messageButtons).find(b =>
+                        b.closest('.nearby-card').querySelector('.name').textContent === chatWith.textContent.replace('Chat with ', '')
+                    ).closest('.nearby-card');
+
+                    const bio = activeCard.getAttribute('data-bio') || '';
+                    const exp = activeCard.getAttribute('data-exp') || '';
+                    const timings = activeCard.getAttribute('data-timings') || '';
+                    const pay = activeCard.getAttribute('data-pay') || '';
+                    const address = activeCard.getAttribute('data-address') || '';
+                    const contact = activeCard.getAttribute('data-contact') || '';
+
+                    const replyText = `Babysitter Info:
+- Bio: ${bio}
+- Experience: ${exp}
+- Timings: ${timings}
+- Pay: ${pay}
+- Address: ${address}
+- For more enquiry call/WhatsApp on: ${contact}`;
+
+                    const replyDiv = document.createElement('div');
+                    replyDiv.textContent = replyText;
+                    replyDiv.style.cssText = 'margin:5px 0; text-align:left; background:#f0f0f0; padding:5px 10px; border-radius:15px; white-space: pre-line;';
+                    chatMessages.appendChild(replyDiv);
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1200); // Info shows 1.2s after greeting
+            }, 800); // Greeting shows 0.8s after user sends message
+        }
+    });
+}
+
+// View profile popup without chat input
+const viewButtons = document.querySelectorAll('.btn-view');
+
+viewButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        const activeCard = btn.closest('.nearby-card');
+        const babysitterName = activeCard.querySelector('.name').textContent;
+        const bio = activeCard.getAttribute('data-bio') || '';
+        const exp = activeCard.getAttribute('data-exp') || '';
+        const timings = activeCard.getAttribute('data-timings') || '';
+        const pay = activeCard.getAttribute('data-pay') || '';
+        const address = activeCard.getAttribute('data-address') || '';
+        const imgSrc = activeCard.querySelector('img').src;
+
+        // Set popup title
+        chatWith.textContent = babysitterName;
+
+        // Clear previous content
+        chatMessages.innerHTML = '';
+
+        // Hide input and send button
+        chatInput.style.display = 'none';
+        sendBtn.style.display = 'none';
+
+        // Show popup
+        chatModal.style.display = 'block';
+
+        // Create profile visualization
+        const profileDiv = document.createElement('div');
+        profileDiv.style.cssText = 'text-align:left; padding:10px;';
+
+        profileDiv.innerHTML = `
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <img src="${imgSrc}" style="width:60px; height:60px; border-radius:50%; border:2px solid var(--primary-purple);">
+                <div>
+                    <h3 style="margin:0; font-size:16px;">${babysitterName}</h3>
+                    <p style="margin:2px 0; font-size:12px; color:#555;">${bio}</p>
+                </div>
+            </div>
+            <p style="margin:2px 0; font-size:12px;"><strong>Experience:</strong> ${exp}</p>
+            <p style="margin:2px 0; font-size:12px;"><strong>Timings:</strong> ${timings}</p>
+            <p style="margin:2px 0; font-size:12px;"><strong>Pay:</strong> ${pay}</p>
+            <p style="margin:2px 0; font-size:12px;"><strong>Address:</strong> ${address}</p>
+        `;
+
+        chatMessages.appendChild(profileDiv);
+    });
+});
+
+const notifBell = document.querySelector('.notification-bell i'); // heart icon
+const favPopup = document.getElementById('favPopup');
+const favList = document.getElementById('favList');
+const closeFav = document.getElementById('closeFav');
+
+notifBell.addEventListener('click', () => {
+    const topRatedCards = document.querySelectorAll('.top-rated-list .rated-card');
+    const favs = [];
+
+    topRatedCards.forEach(card => {
+        const heart = card.querySelector('.heart-icon');
+        if (heart.classList.contains('fa-solid')) {
+            const name = card.querySelector('.rated-info h4').textContent;
+            favs.push(name);
+        }
+    });
+
+    favList.innerHTML = ''; // clear previous
+    if (favs.length > 0) {
+        favs.forEach(name => {
+            const li = document.createElement('li');
+            li.textContent = name;
+            li.style.padding = '6px 0';
+            li.style.borderBottom = '1px solid #eee';
+            favList.appendChild(li);
+        });
+    } else {
+        const li = document.createElement('li');
+        li.textContent = 'No favorites selected yet!';
+        li.style.color = '#999';
+        favList.appendChild(li);
+    }
+
+    favPopup.style.display = 'block'; // show popup
+});
+
+// Close popup
+closeFav.addEventListener('click', () => {
+    favPopup.style.display = 'none';
+});
+
+
+
+// Optional: Restore chat input when you open a message button
+messageButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+        chatInput.style.display = 'flex'; // show input
+        sendBtn.style.display = 'inline-block';
+    });
+});
+});
+</script>
+</body>
+</html>

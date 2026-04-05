@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick and Easy Payments</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family: Arial, sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: linear-gradient(135deg,#fbcfe8,#bfdbfe);
+}
+
+/* mobile card */
+.card{
+  width:330px;
+  height:560px;
+  background:#f5f3ff;
+  border-radius:35px;
+  padding:25px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.15);
+  position:relative;
+
+  /* background image */
+  background-image: url("image2.jpg"); /* Replace with your image */
+  background-size: cover;
+  background-position: center;
+}
+
+/* image circle */
+.image{
+  width:200px;
+  height:200px;
+  background:white;
+  border-radius:50%;
+  margin:60px auto 25px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.image img{
+  width:100px;
+}
+
+/* text */
+h2{
+  text-align:center;
+  font-size:22px;
+  color:#1e3a8a;
+  margin-bottom:12px;
+}
+
+p{
+  text-align:center;
+  font-size:14px;
+  color:#6b7280;
+  line-height:1.5;
+  margin-bottom:40px;
+}
+
+/* rounded rectangle button */
+button{
+  width:180px;
+  height:50px;
+  border:none;
+  border-radius:25px; /* rounded rectangle */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin:0 auto;
+  font-size:16px;
+  font-weight:500;
+  color:white;
+  background: linear-gradient(135deg,#ec4899,#3b82f6);
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <div class="image">
+    <img src="https://cdn-icons-png.flaticon.com/512/3135/3135706.png">
+  </div>
+
+  <h2>Quick and Easy<br>Payments</h2>
+
+  <p>
+    Pay your babysitting from the app<br>
+    also locate and track nanny activities
+  </p>
+
+  <button onclick="start()">Get Started</button>
+
+</div>
+
+<script>
+function start(){
+  window.location.href = "home.html";
+}
+</script>
+
+</body>
+</html>
